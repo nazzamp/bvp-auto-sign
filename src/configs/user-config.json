@@ -10,7 +10,9 @@
       }
     ]
   },
-  "password": "",
-  "shortcutKey": "",
-  "runOnStart": ""
+  "password": "12345678",
+  "shortcutKey": "F9",
+  "runOnStart": false,
+  "running": false,
+  "isRunning": false
 }

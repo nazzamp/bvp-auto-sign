@@ -27,8 +27,8 @@ export function SelectSignTypes({
         setSignType(value);
       }}
     >
-      <SelectTrigger className="w-[180px]">
-        <SelectValue />
+      <SelectTrigger className="w-[280px]">
+        <label>{signTypeList?.[signType]?.name}</label>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>{signTypeList.map(renderSelectItem)}</SelectGroup>
@@ -46,7 +46,7 @@ export function SelectSignTypes({
 
   return (
     <div className="flex gap-3 items-center">
-      <label className="w-28">Loại chữ ký</label>
+      <label className="w-32">Loại chữ ký</label>
       {renderSelection()}
     </div>
   );

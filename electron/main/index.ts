@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -6,6 +6,7 @@ import os from "node:os";
 import { update } from "./update";
 import isDev from "electron-is-dev";
 import fs from "fs";
+import { exec, execFile } from "node:child_process";
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -45,6 +46,8 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, "../preload/index.mjs");
 const indexHtml = path.join(RENDERER_DIST, "index.html");
 
+let isQuiting = false;
+
 async function createWindow() {
   win = new BrowserWindow({
     title: "Main window",
@@ -83,11 +86,42 @@ async function createWindow() {
     return { action: "deny" };
   });
 
+  win.on("close", (event) => {
+    if (!isQuiting) {
+      event.preventDefault();
+      win?.hide();
+    }
+  });
+
   // Auto update
-  update(win);
+  // update(win);
+  resetStaus();
 }
 
-app.whenReady().then(createWindow);
+app.on("ready", createWindow);
+
+app.on("window-all-closed", () => {
+  // if (process.platform !== "darwin") {
+  //     app.quit();
+  // }
+});
+
+function handleQuit() {
+  // win?.close();
+  isQuiting = true;
+  app.quit();
+}
+
+// app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  const tray = new Tray(path.join(process.env.VITE_PUBLIC, "favicon.ico"));
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Quit", type: "normal", click: handleQuit },
+  ]);
+  tray.setToolTip("This is my application.");
+  tray.setContextMenu(contextMenu);
+  tray.addListener("click", () => createWindow());
+});
 
 app.on("window-all-closed", () => {
   win = null;
@@ -161,3 +195,122 @@ ipcMain.handle("read-user-data", async () => {
     return null;
   }
 });
+
+ipcMain.handle("update-user-data", async (events, { data }) => {
+  try {
+    const updatedData = JSON.stringify(data, null, 2);
+    fs.writeFile(getUserDataPath(), updatedData, "utf8", (err) => {
+      if (err) {
+        console.error("Error writing to the file:", err);
+        return;
+      }
+      console.log("Successfully updated running to true.");
+    });
+  } catch (error) {
+    console.error("Error reading data:", error);
+    return null;
+  }
+});
+
+const ahkPath = "C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey64.exe"; // Adjust if needed
+
+function getAhkPath() {
+  return isDev
+    ? path.join(__dirname, "../../src/ahks") // Dev: Project directory
+    : path.join(process.resourcesPath, "ahks"); // Prod: Resources folder
+}
+
+const autoFillAhk = (autoSignPath: string, password: string) =>
+  new Promise((resolve, reject) => {
+    const executePath = path.join(getAhkPath(), autoSignPath);
+
+    execFile(
+      ahkPath,
+      [executePath, password],
+      (error: any, stdout: any, stderr: any) => {
+        if (error) {
+          console.error(`Error: ${error.message}`);
+          reject();
+          return;
+        }
+        if (stderr) {
+          console.error(`AHK Error: ${stderr}`);
+          reject();
+          return;
+        }
+        console.log("AHK done!");
+        resolve("done");
+      }
+    );
+  });
+
+ipcMain.handle("run-ahk", async (events, { path, pass }) => {
+  try {
+    const result = await autoFillAhk(path, pass);
+    console.log({ result });
+  } catch (error) {
+    console.error("Error reading data:", error);
+    return null;
+  }
+});
+
+ipcMain.handle("stop-ahk", async () => {
+  try {
+    exec("taskkill /IM AutoHotkey64.exe /F", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+  } catch (error) {
+    console.error("Error reading data:", error);
+    return null;
+  }
+});
+
+ipcMain.handle("minimize", async (event) => {
+  try {
+    event.preventDefault();
+    win?.hide();
+  } catch (error) {
+    console.error("Error reading data:", error);
+    return null;
+  }
+});
+
+const resetStaus = async () => {
+  try {
+    const dataPath = getUserDataPath();
+    const rawData = await fs.promises.readFile(dataPath, "utf8");
+    const data = JSON.parse(rawData);
+    const resetStatusData = { ...data, isRunning: false };
+    exec("taskkill /IM AutoHotkey64.exe /F", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    const updatedData = JSON.stringify(resetStatusData, null, 2);
+    fs.writeFile(getUserDataPath(), updatedData, "utf8", (err) => {
+      if (err) {
+        console.error("Error writing to the file:", err);
+        return;
+      }
+      console.log("Successfully updated running to true.");
+    });
+  } catch (error) {
+    console.error("Error reading data:", error);
+    return null;
+  }
+};

@@ -5,10 +5,16 @@ const InputBW = ({
   placeholder,
   name,
   type = "text",
+  value,
+  onChange,
+  disabled = false,
 }: {
   placeholder?: string;
   name?: string;
   type?: string;
+  value?: string;
+  onChange?: any;
+  disabled: boolean;
 }) => {
   return (
     <input
@@ -16,6 +22,12 @@ const InputBW = ({
       className="input"
       name={name}
       type={type}
+      value={value}
+      onChange={(e) => {
+        onChange(e.target.value);
+      }}
+      disabled={disabled}
+      style={{ opacity: disabled ? 0.6 : 1 }}
     />
   );
 };
