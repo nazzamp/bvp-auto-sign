@@ -1,9 +1,9 @@
 {
-  "name": "electron-vite-react",
-  "version": "2.2.0",
+  "name": "bvp-auto-sign",
+  "version": "1.0.1",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "BVP Auto Sign Tool",
+  "author": "nazzamp",
   "license": "MIT",
   "private": true,
   "debug": {
@@ -20,7 +20,15 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "electron-updater": "^6.3.9"
+    "@radix-ui/react-select": "^2.1.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "electron-is-dev": "^3.0.1",
+    "electron-updater": "^6.3.9",
+    "fs": "^0.0.1-security",
+    "lucide-react": "^0.475.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",

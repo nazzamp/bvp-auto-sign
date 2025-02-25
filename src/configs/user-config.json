@@ -1,0 +1,16 @@
+{
+  "department": {
+    "id": "1",
+    "name": "Khoa chẩn đoán hình ảnh",
+    "signType": [
+      {
+        "id": "1",
+        "name": "Ký số xét nghiệm cận lâm sàng",
+        "ahkPath": "../ahks/cdha/1.ahk"
+      }
+    ]
+  },
+  "password": "",
+  "shortcutKey": "",
+  "runOnStart": ""
+}
