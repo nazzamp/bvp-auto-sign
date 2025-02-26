@@ -14,7 +14,7 @@ const InputBW = ({
   type?: string;
   value?: string;
   onChange?: any;
-  disabled: boolean;
+  disabled?: boolean;
 }) => {
   return (
     <input

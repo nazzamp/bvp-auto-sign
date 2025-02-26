@@ -8,8 +8,8 @@ FindTextAndMoveMouse(TextToFind) {
     Height := A_ScreenHeight
 
     SaveScreenShot(0, 0, Width, Height, 'screen.png', 'png') ;
-    RunWait('tesseract screen.png output -l eng tsv', , 'Hide')
-    OCROutput := FileRead('output.tsv')
+    RunWait('tesseract screen.png output -l vie tsv', , 'Hide')
+    OCROutput := FileRead('output.tsv', "UTF-8")
     FoundPos := FindTextPosition(OCROutput, TextToFind)
 
     if (FoundPos != "") {
@@ -31,6 +31,8 @@ FindTextAndMoveMouse(TextToFind) {
 
             if (Fields.Length < 12)
                 continue
+
+            Log(Fields[12] TextToFind)
 
             if (Fields[12] = TextToFind) {
                 X := Fields[7]

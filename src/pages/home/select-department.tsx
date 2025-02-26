@@ -18,7 +18,7 @@ export function SelectDepartment({
 }) {
   const renderSelection = () => (
     <Select
-      value={department}
+      value={department.toString()}
       onValueChange={(value) => {
         setDepartment(value);
       }}

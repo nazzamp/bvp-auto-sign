@@ -6,13 +6,14 @@ PASS := A_Args[1]
 F9::
 {
     MyGui := Gui()
+
+    CloseApp(*) {
+        MyGui.Destroy()
+    }
+
     try {
         MyGui.Title := "Script Progress"
         StepText := MyGui.Add("Text", "w300", "Step: Initializing...")
-
-        CloseApp(*) {
-            MyGui.Destroy()
-        }
 
         StopButton := MyGui.Add("Button", "w100", "Close")
         StopButton.OnEvent("Click", CloseApp)
@@ -37,8 +38,22 @@ F9::
         Height := A_ScreenHeight
 
         UpdateStep("Searching for Image")
-        ImageSearch(&OutputVarX, &OutputVarY, 0, 0, Width, Height, "../images/ky-so.png")
-        MouseMove(OutputVarX + 30, OutputVarY - 5)
+        if (FindTextAndMoveMouse("Lưu")) {
+            Sleep 200
+            MouseClick 'Left'
+            Sleep 200
+            if WinExist("FPT")
+                WinActivate
+        }
+
+        UpdateStep("Searching for Image")
+        if (FindTextAndMoveMouse("NhânSự")) {
+            Sleep 200
+            MouseMove(30, 40, 50, 'R')
+            Sleep 100
+            MouseClick "Left"
+            Sleep 500
+        }
 
         UpdateStep("Clicking Mouse")
         MouseClick 'Left'
@@ -114,9 +129,11 @@ F9::
 
         UpdateStep("Script Completed")
         Sleep 1000
+        CloseApp
 
         return
     } catch Error {
         UpdateStep("Script failed! Please try again!")
+        CloseApp
     }
 }

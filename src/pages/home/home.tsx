@@ -40,8 +40,9 @@ function Home() {
     ipc.invoke("update-user-data", {
       data: { ...userData, isRunning: true, password },
     });
+    const temp = departmentData[departmentIdx] as any;
     const data = await ipc.invoke("run-ahk", {
-      path: departmentData[departmentIdx].signType[signTypeIdx].ahkPath,
+      path: temp.signType[signTypeIdx].ahkPath,
       pass: password,
     });
   };
