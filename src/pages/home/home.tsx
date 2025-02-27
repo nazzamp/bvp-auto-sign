@@ -12,6 +12,7 @@ function Home() {
   const [signTypeIdx, setSignTypeIdx] = useState(0);
   const [userData, setUserData] = useState<any>();
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const ipc = window.ipcRenderer as any;
 
@@ -23,7 +24,10 @@ function Home() {
   const readUserData = async () => {
     const data = await ipc.invoke("read-user-data");
     setUserData(data);
+    setDepartmentIdx(data?.departmentIdx);
+    setSignTypeIdx(data?.signTypeIdx);
     setPassword(data?.password);
+    setUsername(data?.username);
   };
 
   useEffect(() => {
@@ -31,19 +35,31 @@ function Home() {
     readUserData();
   }, []);
 
-  useEffect(() => {
-    setSignTypeIdx(0);
-  }, [departmentIdx]);
+  // useEffect(() => {
+  //   setSignTypeIdx(0);
+  // }, [departmentIdx]);
 
   const startSign = async () => {
-    setUserData({ ...userData, isRunning: true, password });
-    ipc.invoke("update-user-data", {
-      data: { ...userData, isRunning: true, password },
-    });
+    await ipc.invoke("minimize");
     const temp = departmentData[departmentIdx] as any;
-    const data = await ipc.invoke("run-ahk", {
+    setUserData({ ...userData, isRunning: true, password, username });
+    const usernameArr = username.split(" ");
+    ipc.invoke("update-user-data", {
+      data: {
+        departmentIdx,
+        signTypeIdx,
+        isRunning: true,
+        password,
+        username,
+      },
+    });
+    await ipc.invoke("run-ahk", {
       path: temp.signType[signTypeIdx].ahkPath,
-      pass: password,
+      agr1: password,
+      agr2:
+        usernameArr[usernameArr.length - 2] +
+        " " +
+        usernameArr[usernameArr.length - 1],
     });
   };
 
@@ -70,6 +86,14 @@ function Home() {
           />
         </>
       )}
+      <div className="flex gap-3 items-center">
+        <label className="w-32">Tên bác sĩ</label>
+        <InputBW
+          placeholder="Nhập tên bác sĩ"
+          value={username}
+          onChange={setUsername}
+        />
+      </div>
       <div className="flex gap-3 items-center">
         <label className="w-32">Mật khẩu ký số</label>
         <InputBW

@@ -62,7 +62,7 @@ async function createWindow() {
       // contextIsolation: false,
     },
     width: 540,
-    height: 600,
+    height: 640,
     autoHideMenuBar: true,
   });
 
@@ -95,7 +95,7 @@ async function createWindow() {
 
   // Auto update
   // update(win);
-  resetStaus();
+  // resetStaus();
 }
 
 app.on("ready", createWindow);
@@ -106,19 +106,21 @@ app.on("window-all-closed", () => {
   // }
 });
 
-function handleQuit() {
+const handleQuit = async () => {
   // win?.close();
+  await resetStaus();
+  stopAhk();
   isQuiting = true;
   app.quit();
-}
+};
 
 // app.whenReady().then(createWindow);
 app.whenReady().then(() => {
   const tray = new Tray(path.join(process.env.VITE_PUBLIC, "favicon.ico"));
   const contextMenu = Menu.buildFromTemplate([
-    { label: "Quit", type: "normal", click: handleQuit },
+    { label: "Thoát", type: "normal", click: handleQuit },
   ]);
-  tray.setToolTip("This is my application.");
+  tray.setToolTip("Tự động ký - Bệnh viện Phổi");
   tray.setContextMenu(contextMenu);
   tray.addListener("click", () => createWindow());
 });
@@ -220,13 +222,13 @@ function getAhkPath() {
     : path.join(process.resourcesPath, "ahks"); // Prod: Resources folder
 }
 
-const autoFillAhk = (autoSignPath: string, password: string) =>
+const autoFillAhk = (autoSignPath: string, agr1: string, agr2: string) =>
   new Promise((resolve, reject) => {
     const executePath = path.join(getAhkPath(), autoSignPath);
 
     execFile(
       ahkPath,
-      [executePath, password],
+      [executePath, agr1, agr2],
       (error: any, stdout: any, stderr: any) => {
         if (error) {
           console.error(`Error: ${error.message}`);
@@ -244,9 +246,9 @@ const autoFillAhk = (autoSignPath: string, password: string) =>
     );
   });
 
-ipcMain.handle("run-ahk", async (events, { path, pass }) => {
+ipcMain.handle("run-ahk", async (events, { path, agr1, agr2 }) => {
   try {
-    const result = await autoFillAhk(path, pass);
+    const result = await autoFillAhk(path, agr1, agr2);
     console.log({ result });
   } catch (error) {
     console.error("Error reading data:", error);
@@ -254,7 +256,7 @@ ipcMain.handle("run-ahk", async (events, { path, pass }) => {
   }
 });
 
-ipcMain.handle("stop-ahk", async () => {
+const stopAhk = async () => {
   try {
     exec("taskkill /IM AutoHotkey64.exe /F", (error, stdout, stderr) => {
       if (error) {
@@ -271,11 +273,12 @@ ipcMain.handle("stop-ahk", async () => {
     console.error("Error reading data:", error);
     return null;
   }
-});
+};
+
+ipcMain.handle("stop-ahk", stopAhk);
 
 ipcMain.handle("minimize", async (event) => {
   try {
-    event.preventDefault();
     win?.hide();
   } catch (error) {
     console.error("Error reading data:", error);

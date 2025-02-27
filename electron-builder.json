@@ -38,6 +38,10 @@
     {
       "from": "src/configs/",
       "to": "configs/"
+    },
+    {
+      "from": "setup/",
+      "to": "setup/"
     }
   ]
 }

@@ -1,18 +1,7 @@
 {
-  "department": {
-    "id": "1",
-    "name": "Khoa chẩn đoán hình ảnh",
-    "signType": [
-      {
-        "id": "1",
-        "name": "Ký số xét nghiệm cận lâm sàng",
-        "ahkPath": "../ahks/cdha/1.ahk"
-      }
-    ]
-  },
+  "departmentIdx": "0",
+  "signTypeIdx": 0,
+  "isRunning": true,
   "password": "12345678",
-  "shortcutKey": "F9",
-  "runOnStart": false,
-  "running": false,
-  "isRunning": true
+  "username": "Vũ Văn Thông"
 }
