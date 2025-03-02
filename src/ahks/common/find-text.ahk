@@ -56,7 +56,7 @@ FindTextArrayAndMoveMouse(TextArr) {
     IsContinuedString := false
 
     SaveScreenShot(0, 0, Width, Height, 'screen.png', 'png') ;
-    RunWait('tesseract screen.png output -l vie tsv', , 'Hide')
+    RunWait('tesseract screen.png output -l vie tsv --psm 0', , 'Hide')
     OCROutput := FileRead('output.tsv', "UTF-8")
     FoundPos := FindTextPosition(OCROutput, TextArr)
 
@@ -200,4 +200,29 @@ FindDoctorSignTreatment(docName) {
 
 Log(msg) {
     FileAppend msg "`n", "*"
+}
+
+FindTextInRegion(x1, y1, x2, y2) {
+    CoordMode "Mouse", "Screen"
+
+    Width := A_ScreenWidth
+    Height := A_ScreenHeight
+
+    SaveScreenShotGrayScale(x1, y1, x2, y2, 'screen.png', 'png', 10) ;
+    RunWait('tesseract screen.png output -l vie tsv', , 'Hide')
+    OCROutput := FileRead('output.tsv', "UTF-8")
+    splitOutput := StrSplit(OCROutput, "`n", "`r")
+    if (splitOutput.Length >= 6) {
+        Line := StrSplit(OCROutput, "`n", "`r")[6]
+        Fields := StrSplit(Line, "`t")
+
+        ; Clean up
+        FileDelete('screen.png')
+        FileDelete('output.tsv')
+
+        return Fields[12]
+    }
+    FileDelete('screen.png')
+    FileDelete('output.tsv')
+    return ''
 }

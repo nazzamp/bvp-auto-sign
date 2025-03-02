@@ -1,84 +1,52 @@
 #Requires AutoHotkey v2.0
 #Include ../common/find-text.ahk
 
-Esc:: ExitApp
-
 PASS := A_Args[1]
+IMAGE_PATH := A_Args[2]
 
 F9::
 {
-    MyGui := Gui()
-
-    CloseApp(*) {
-        MyGui.Destroy()
-    }
-
     try {
-        MyGui.Title := "Script Progress"
-        StepText := MyGui.Add("Text", "w300", "Step: Initializing...")
-
-        StopButton := MyGui.Add("Button", "w100", "Close")
-        StopButton.OnEvent("Click", CloseApp)
-
-        MyGui.Show()
-
-        ; Function to update the step text in the GUI
-        UpdateStep(stepName) {
-            StepText.Text := "Step: " stepName
-        }
-
-        ; Simulate your script steps
-        UpdateStep("Setting CoordMode")
         CoordMode "Pixel", "Screen"
 
-        UpdateStep("Activating FPT Window")
         if WinExist("FPT")
             WinActivate
 
-        UpdateStep("Getting Screen Dimensions")
         Width := A_ScreenWidth
         Height := A_ScreenHeight
 
-        UpdateStep("Searching for Image")
-        if (FindTextAndMoveMouse("Lưu")) {
-            Sleep 200
+        result := ImageSearch(&OutputVarX, &OutputVarY, 0, 0, Width, Height, IMAGE_PATH . "save.png")
+        if (result = 1) {
+            MouseMove(OutputVarX + 20, OutputVarY)
             MouseClick 'Left'
-            Sleep 200
-            if WinExist("FPT")
-                WinActivate
+            Sleep 1000
         }
 
-        UpdateStep("Searching for Image")
-        if (FindTextAndMoveMouse("NhânSự")) {
-            Sleep 200
-            MouseMove(30, 40, 50, 'R')
-            Sleep 100
-            MouseClick "Left"
-            Sleep 500
-        }
+        ImageSearch(&OutputVarX, &OutputVarY, 0, 0, Width, Height, IMAGE_PATH . "ky-so.png")
+        MouseMove(OutputVarX + 30, OutputVarY - 10)
 
-        UpdateStep("Clicking Mouse")
         MouseClick 'Left'
         Sleep 1000
 
-        UpdateStep("Sending Enter Key")
         Send("{Enter}")
         Sleep 1000
 
-        UpdateStep("Waiting for 'Thông tin văn bản' Window")
         loop {
             if WinExist("Thông tin văn bản") {
                 WinActivate
+                Sleep 200
+                Send("#{Up}")
+                Sleep 200
+                MouseMove(A_ScreenWidth / 2, A_ScreenHeight / 2)
                 break
             }
-            Sleep(500)
+            Sleep(1000)
         }
 
-        UpdateStep("Searching for Text and Moving Mouse")
         loop {
             if (FindTextAndMoveMouse("Bs.")) {
                 Sleep 500
-                MouseMove(-70, -10, 50, "R")
+                MouseMove(-140, -10, 50, "R")
                 Sleep 100
                 MouseClick "Left", , , 2
                 Sleep 500
@@ -116,10 +84,6 @@ F9::
                 }
                 break
             } else {
-                if WinExist("Thông tin văn bản") {
-                    WinActivate
-                }
-                MouseMove(A_ScreenWidth / 2, A_ScreenHeight / 2)
                 Sleep 200
                 Send "{WheelDown 3}"
                 Sleep 300
@@ -129,13 +93,10 @@ F9::
             }
         }
 
-        UpdateStep("Script Completed")
         Sleep 1000
-        CloseApp
 
         return
     } catch Error {
-        UpdateStep("Script failed! Please try again!")
-        CloseApp
+
     }
 }

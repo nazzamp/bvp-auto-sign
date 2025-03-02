@@ -4,21 +4,20 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 
 export function SelectSignTypes({
-  data,
+  departmentIdx,
   departmentData,
   signType,
   setSignType,
 }: {
-  data: any;
+  departmentIdx: any;
   departmentData: any;
   signType: any;
   setSignType: any;
 }) {
-  const signTypeList = departmentData[data].signType;
+  const signTypeList = departmentData[departmentIdx].signType;
 
   const renderSelection = () => (
     <Select
@@ -27,7 +26,7 @@ export function SelectSignTypes({
         setSignType(value);
       }}
     >
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className="w-[280px] bg-white">
         <label>{signTypeList?.[signType]?.name}</label>
       </SelectTrigger>
       <SelectContent>

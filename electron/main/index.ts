@@ -62,9 +62,11 @@ async function createWindow() {
       // contextIsolation: false,
     },
     width: 540,
-    height: 640,
+    height: 680,
     autoHideMenuBar: true,
   });
+
+  win.webContents.session.spellCheckerEnabled = false;
 
   if (VITE_DEV_SERVER_URL) {
     // #298
@@ -222,13 +224,13 @@ function getAhkPath() {
     : path.join(process.resourcesPath, "ahks"); // Prod: Resources folder
 }
 
-const autoFillAhk = (autoSignPath: string, agr1: string, agr2: string) =>
+const autoFillAhk = (autoSignPath: string, agrArr: Array<string>) =>
   new Promise((resolve, reject) => {
     const executePath = path.join(getAhkPath(), autoSignPath);
 
     execFile(
       ahkPath,
-      [executePath, agr1, agr2],
+      [executePath, ...agrArr],
       (error: any, stdout: any, stderr: any) => {
         if (error) {
           console.error(`Error: ${error.message}`);
@@ -246,9 +248,9 @@ const autoFillAhk = (autoSignPath: string, agr1: string, agr2: string) =>
     );
   });
 
-ipcMain.handle("run-ahk", async (events, { path, agr1, agr2 }) => {
+ipcMain.handle("run-ahk", async (events, { path, agrArr }) => {
   try {
-    const result = await autoFillAhk(path, agr1, agr2);
+    const result = await autoFillAhk(path, agrArr);
     console.log({ result });
   } catch (error) {
     console.error("Error reading data:", error);

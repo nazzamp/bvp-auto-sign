@@ -4,27 +4,22 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
+import { BiImages } from "react-icons/bi";
 
-export function SelectDepartment({
+export function SelectScreenType({
   data,
-  department,
-  setDepartment,
+  screenType,
+  setScreenType,
 }: {
   data: any;
-  department: number;
-  setDepartment: any;
+  screenType: number;
+  setScreenType: any;
 }) {
   const renderSelection = () => (
-    <Select
-      value={department.toString()}
-      onValueChange={(value) => {
-        setDepartment(value);
-      }}
-    >
+    <Select value={screenType.toString()} onValueChange={setScreenType}>
       <SelectTrigger className="w-[280px] bg-white">
-        <label>{data?.[department]?.name}</label>
+        <label>{data[screenType].name}</label>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>{data.map(renderSelectItem)}</SelectGroup>
@@ -42,7 +37,10 @@ export function SelectDepartment({
 
   return (
     <div className="flex gap-3 items-center">
-      <label className="w-32">Phòng ban</label>
+      <div className="flex items-center gap-2 w-32">
+        <BiImages size={20} />
+        <label className="font-medium">Màn hình</label>
+      </div>
       {renderSelection()}
     </div>
   );

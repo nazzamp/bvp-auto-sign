@@ -1,24 +1,33 @@
-[
-  {
-    "id": "1",
-    "name": "Khoa chẩn đoán hình ảnh",
-    "signType": [
-      {
-        "id": "1",
-        "name": "Ký số xét nghiệm cận lâm sàng",
-        "ahkPath": "../ahks/cdha/1.ahk"
-      }
-    ]
-  },
-  {
-    "id": "2",
-    "name": "Khoa hồi sức tích cực",
-    "signType": [
-      {
-        "id": "1",
-        "name": "Ký số phiếu điều trị",
-        "ahkPath": "../ahks/hstc/1.ahk"
-      }
-    ]
-  }
-]
+{
+  "departments": [
+    {
+      "id": "1",
+      "name": "Khoa chẩn đoán hình ảnh",
+      "signType": [
+        {
+          "id": "1",
+          "name": "Ký số xét nghiệm cận lâm sàng",
+          "ahkPath": "../ahks/cdha/1.ahk"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Khoa hồi sức tích cực",
+      "signType": [
+        {
+          "id": "1",
+          "name": "Ký số phiếu điều trị",
+          "ahkPath": "../ahks/hstc/1.ahk",
+          "additionalFields": ["timeRange"]
+        }
+      ]
+    }
+  ],
+  "screenTypes": [
+    {
+      "name": "acer-1920-1080",
+      "path": "../images/acer-1920-1080/"
+    }
+  ]
+}
