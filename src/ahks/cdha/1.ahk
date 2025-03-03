@@ -61,6 +61,16 @@ F9::
                         Sleep 300
                         Send("{Enter}")
                         Sleep 3000
+                        if (WinExist("Error")) {
+                            WinActivate
+                            Sleep 500
+                            Send("!{F4}")
+                            Sleep 500
+                            Send("!{F4}")
+                            Sleep 500
+                            Send("!{F4}")
+                            break
+                        }
                         if (WinExist("Security")) {
                             WinActivate
                             SendInput(PASS)

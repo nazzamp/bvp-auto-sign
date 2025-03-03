@@ -69,7 +69,7 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
     },
-    width: 540,
+    width: 720,
     height: 680,
     autoHideMenuBar: true,
   });
