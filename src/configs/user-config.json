@@ -1,7 +1,7 @@
 {
   "departmentIdx": "1",
   "signTypeIdx": 0,
-  "isRunning": true,
+  "isRunning": false,
   "password": "12345678",
   "username": "Vũ Văn Thông",
   "screenType": "0"

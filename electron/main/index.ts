@@ -7,6 +7,14 @@ import { update } from "./update";
 import isDev from "electron-is-dev";
 import fs from "fs";
 import { exec, execFile } from "node:child_process";
+import AutoLaunch from "auto-launch";
+import psList from "ps-list";
+
+// Configure auto-launcher
+const appLauncher = new AutoLaunch({
+  name: "bvp-auto-sign",
+  isHidden: false,
+});
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -232,6 +240,7 @@ const autoFillAhk = (autoSignPath: string, agrArr: Array<string>) =>
       ahkPath,
       [executePath, ...agrArr],
       (error: any, stdout: any, stderr: any) => {
+        win?.webContents.send("ahk-status", false);
         if (error) {
           console.error(`Error: ${error.message}`);
           reject();
@@ -246,6 +255,8 @@ const autoFillAhk = (autoSignPath: string, agrArr: Array<string>) =>
         resolve("done");
       }
     );
+
+    win?.webContents.send("ahk-status", true);
   });
 
 ipcMain.handle("run-ahk", async (events, { path, agrArr }) => {
@@ -319,3 +330,43 @@ const resetStaus = async () => {
     return null;
   }
 };
+
+ipcMain.handle("toggle-auto-launch", async (event, enable) => {
+  try {
+    if (enable) {
+      await appLauncher.enable();
+    } else {
+      await appLauncher.disable();
+    }
+    return true;
+  } catch (error) {
+    console.error("Auto-launch error:", error);
+    return false;
+  }
+});
+
+ipcMain.handle("check-auto-launch", async () => {
+  const result = await appLauncher.isEnabled();
+  return result;
+});
+
+const checkAutoHotkey = async () => {
+  try {
+    const processes = await psList();
+    const ahkProcesses = processes.filter(
+      (p) =>
+        p.name.toLowerCase() === "autohotkey64.exe" ||
+        p.name.toLowerCase() === "autohotkey"
+    );
+
+    return ahkProcesses.length > 0;
+  } catch (error) {
+    console.error("Process check error:", error);
+    return false;
+  }
+};
+
+ipcMain.handle("check-auto-hotkey-running", async () => {
+  const result = await checkAutoHotkey();
+  return result;
+});

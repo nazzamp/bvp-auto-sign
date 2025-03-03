@@ -13,6 +13,8 @@ import AdditionalFields from "./addtional-fields";
 function Home() {
   const [configs, setConfigs] = useState<any>({});
   const [additionValues, setAdditionalValues] = useState([]);
+  const [isAutoStart, setIsAutoStart] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
 
   const form = useFormik({
     initialValues: {
@@ -20,7 +22,6 @@ function Home() {
       signTypeIdx: 0,
       password: "",
       username: "",
-      isRunning: false,
       screenType: 0,
     },
     onSubmit: () => {},
@@ -42,19 +43,30 @@ function Home() {
     form.setValues(data);
   };
 
+  const checkIsAutoStart = async () => {
+    const result = await ipc.invoke("check-auto-launch");
+    setIsAutoStart(result);
+  };
+
+  const checkAutoHotkeyIsRunning = async () => {
+    const result = await ipc.invoke("check-auto-hotkey-running");
+    setIsRunning(result);
+  };
+
   useEffect(() => {
     readDepartmentData();
     readUserData();
+    checkIsAutoStart();
+    checkAutoHotkeyIsRunning();
   }, []);
 
   const sign = async (additionalFields = []) => {
-    form.setValues({ ...form.values, isRunning: true });
+    setIsRunning(true);
     await ipc.invoke("minimize");
     const temp = configs.departments[form.values.departmentIdx] as any;
     ipc.invoke("update-user-data", {
       data: {
         ...form.values,
-        isRunning: true,
       },
     });
     await ipc.invoke("run-ahk", {
@@ -77,16 +89,32 @@ function Home() {
 
   const stopSign = async () => {
     await ipc.invoke("stop-ahk");
-    form.setValues({ ...form.values, isRunning: false });
+    setIsRunning(false);
   };
 
   const setFormValue = (formKey: string) => (value: string) => {
     form.setFieldValue(formKey, value);
   };
 
+  const toogleAutoStart = async (enable: boolean) => {
+    const result = await ipc.invoke("toggle-auto-launch", enable);
+    return result;
+  };
+
+  useEffect(() => {
+    const statusListener = (_: any, running: boolean) => {
+      setIsRunning(running);
+    };
+    ipc.on("ahk-status", statusListener);
+
+    return () => {
+      ipc?.removeListener?.("ahk-status", statusListener);
+    };
+  }, []);
+
   return (
     <div id="home" className="w-full h-full px-5 flex flex-col gap-6">
-      <h1 className="text-2xl mb-2 mt-6">Cấu hình ký</h1>
+      <h1 className="text-2xl mb-0 mt-6">Cấu hình ký</h1>
       {configs.departments?.length > 0 && (
         <>
           <SelectScreenType
@@ -140,10 +168,14 @@ function Home() {
       </div>
       <div className="flex gap-3 items-center">
         <label className="w-32">Tự động chạy khi mở máy</label>
-        <Toogle />
+        <Toogle
+          enabled={isAutoStart}
+          setEnabled={setIsAutoStart}
+          toogleAutoStart={toogleAutoStart}
+        />
       </div>
-      <div className="mt-4">
-        {form.values?.isRunning ? (
+      <div className="mt-2">
+        {isRunning ? (
           <Button3DRemove title="Dừng tự động" onClick={stopSign} />
         ) : (
           <Button3D title="Bắt đầu ký" onClick={startSign} />

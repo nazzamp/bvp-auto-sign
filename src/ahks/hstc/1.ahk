@@ -16,28 +16,33 @@ if WinExist("FPT") {
     WinActivate
     Sleep 200
     Send("{Tab}")
-    Sleep 100
+    Sleep 300
     Send("{{Tab}}")
-    Sleep 100
+    Sleep 300
     loop {
         Send("{Space}")
-        Sleep 200
-        ; FindImageAndMoveMouse(IMAGE_PATH . "delete.png")
+        Sleep 300
         ImageSearch(&X, &Y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "delete.png")
         Sleep 300
         MouseMove(X, Y)
         Sleep 300
         MouseClick "Left"
         Sleep 300
-        MouseMove(A_ScreenWidth / 2, A_ScreenHeight / 2)
-        Sleep 800
-        if (!ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "khong-xoa-duoc.png")) {
+        MouseMove(200, 0, 50, "R")
+        Sleep 300
+
+        if (!ImageSearch(&Z, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "khong-xoa-duoc.png")) {
             Send('{Right}')
             Sleep 600
             Send("{Enter}")
             Sleep 600
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "xem-ky-so.png")) {
-                MouseMove(FoundX + 20, FoundY - 10)
+                Sleep 200
+                if (A_Index = 1) {
+                    MouseMove(FoundX + 20, FoundY - 10, 100)
+                } else {
+                    MouseMove(FoundX + 20, FoundY, 100)
+                }
                 Sleep 500
                 MouseClick "Left"
                 Sleep 300
@@ -122,17 +127,15 @@ if WinExist("FPT") {
             Sleep 600
         }
 
-        if (FindImage(IMAGE_PATH . "phieu-dieu-tri-last.png")) {
+        if (ImageSearch(&H, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "phieu-dieu-tri-last.png") ||
+        ImageSearch(&H, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "phieu-dieu-tri-last-1.png")) {
             Sleep 300
-            ; FindImageAndMoveMouse(IMAGE_PATH . "so-benh-an.png")
             ImageSearch(&G, &H, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "so-benh-an.png")
             Sleep 300
-            MouseMove(G, H)
+            MouseMove(G + 175, H - 10)
             Sleep 300
-            MouseMove(175, 0, 52, "R")
-            Sleep 200
             MouseClick "Left"
-            Sleep 200
+            Sleep 500
             if (FindImage(IMAGE_PATH . "het-benh-nhan.png")) {
                 MsgBox "Đã ký số toàn bộ phiếu điều trị!"
                 break
@@ -142,30 +145,30 @@ if WinExist("FPT") {
             Send("{Enter}")
             Sleep 3000
             Send("{Tab}")
-            Sleep 100
+            Sleep 500
             Send("{{Tab}}")
-            Sleep 300
+            Sleep 500
         } else {
             Sleep 300
             Send("{Space}")
             Sleep 500
             Send("{Down}")
-            Sleep 300
+            Sleep 600
         }
     }
 }
 
 SelectSign() {
     Send("{Tab}")
-    Sleep 300
+    Sleep 400
     Send("{Tab}")
-    Sleep 300
+    Sleep 400
     Send("{Space}")
-    Sleep 300
+    Sleep 400
     Send("{Enter}")
-    Sleep 300
+    Sleep 400
     Send("{Enter}")
-    Sleep 300
+    Sleep 400
 }
 
 CheckDateInRange(DATE_FROM, DATE_TO) {

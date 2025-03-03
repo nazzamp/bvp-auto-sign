@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include ../common/find-text.ahk
 
+Esc:: ExitApp
+
 PASS := A_Args[1]
 IMAGE_PATH := A_Args[2]
 

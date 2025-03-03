@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "1102",
   "asar": true,
+  "productName": "Tự động ký số - Bệnh viện Phổi Quảng Ninh",
   "directories": {
     "output": "release/${version}"
   },
