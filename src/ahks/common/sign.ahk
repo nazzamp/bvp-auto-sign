@@ -12,7 +12,7 @@ SignAtPos(PASS) {
             SendInput(PASS)
             Sleep 300
             Send("{Enter}")
-            Sleep 3000
+            Sleep 6000
             if (WinExist("Error")) {
                 WinActivate
                 Sleep 500
@@ -60,7 +60,7 @@ SignAtPosNotExit(PASS) {
             SendInput(PASS)
             Sleep 300
             Send("{Enter}")
-            Sleep 3000
+            Sleep 6000
             if (WinExist("Error")) {
                 WinActivate
                 Sleep 500

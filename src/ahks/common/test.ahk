@@ -7,12 +7,13 @@
 
 CoordMode "Pixel", "Screen"
 
-if WinExist("Thông tin")
+if WinExist("FPT")
     WinActivate
 
 ; MsgBox FindTextAndMoveMouse('TIN')
 MsgBox ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight,
-    "*100 ../images/acer-1920-1080/check-y-lenh.png",)
+    "*50 ../images/acer-1920-1080/phieu-dieu-tri-last.png"
+)
 ; Sleep 200
 ; MouseMove(x + 20, y - 10)
 ; Sleep 200

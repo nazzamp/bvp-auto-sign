@@ -22,12 +22,12 @@ if WinExist("FPT") {
         Sleep 300
         ImageSearch(&X, &Y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "delete.png")
         Sleep 300
-        MouseMove(X, Y)
+        MouseMove(X+10, Y)
         Sleep 300
         MouseClick "Left"
-        Sleep 300
-        MouseMove(0, 0)
-        Sleep 300
+        Sleep 500
+        MouseMove(0, 0, 100)
+        Sleep 500
 
         if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png") && !FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
             Send('{Right}')
@@ -69,9 +69,8 @@ if WinExist("FPT") {
                                 Send("#{Up}")
                                 Sleep 1000
                                 loop {
-                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
-                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png") ||
-                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-2.png")) {
+                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png",0,0,150) ||
+                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png",0,0,150)) {
                                         Sleep 300
                                         MouseMove(240, -10, 50, "R")
                                         Sleep 200
@@ -82,9 +81,7 @@ if WinExist("FPT") {
                                                 WinActivate
                                             }
                                             loop {
-                                                if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
-                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png") ||
-                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-2.png")) {
+                                                if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png",0,0,150) || FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png",0,0,150)) {
                                                     Sleep 300
                                                     MouseMove(980, -10, 50, "R")
                                                     Sleep 200

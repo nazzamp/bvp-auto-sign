@@ -18,7 +18,13 @@
         "arch": ["x64"]
       }
     ],
-    "publish": ["github"],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "nazzamp",
+        "repo": "bvp-auto-sign"
+      }
+    ],
     "artifactName": "${productName}_${version}.${ext}"
   },
   "nsis": {
