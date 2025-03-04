@@ -27,7 +27,7 @@ const AdditionalFields = ({
   const renderItem = (item: string, index: number) => {
     if (item === "timeRange")
       return (
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-3 items-center" key={index}>
           <label className="w-32">Trong khoảng</label>
           <DatePickerWithRange date={date} setDate={setDate} />
         </div>

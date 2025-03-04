@@ -55,11 +55,16 @@ function Home() {
     setIsRunning(result);
   };
 
+  const checkUpdate = async () => {
+    const result = await ipc.invoke("check-update");
+  };
+
   useEffect(() => {
     readDepartmentData();
     readUserData();
     checkIsAutoStart();
     checkAutoHotkeyIsRunning();
+    checkUpdate();
   }, []);
 
   const sign = async (additionalFields = []) => {

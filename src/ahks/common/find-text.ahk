@@ -44,6 +44,8 @@ FindTextAndMoveMouse(TextToFind) {
         }
         return ""
     }
+
+    CoordMode "Pixel", "Screen"
     return FoundPos != ""
 }
 
@@ -95,6 +97,7 @@ FindTextArrayAndMoveMouse(TextArr) {
         return ""
     }
 
+    CoordMode "Pixel", "Screen"
     return FoundPos != ""
 }
 
@@ -138,6 +141,7 @@ FindDoctorName() {
         return ""
     }
 
+    CoordMode "Pixel", "Screen"
     return Result
 }
 
@@ -195,6 +199,8 @@ FindDoctorSignTreatment(docName) {
         }
         return []
     }
+
+    CoordMode "Pixel", "Screen"
     return Result
 }
 
@@ -203,7 +209,7 @@ Log(msg) {
 }
 
 FindTextInRegion(x1, y1, x2, y2) {
-    CoordMode "Mouse", "Screen"
+    ; CoordMode "Mouse", "Screen"
 
     Width := A_ScreenWidth
     Height := A_ScreenHeight
@@ -224,5 +230,7 @@ FindTextInRegion(x1, y1, x2, y2) {
     }
     FileDelete('screen.png')
     FileDelete('output.tsv')
+
+    ; CoordMode "Pixel", "Screen"
     return ''
 }

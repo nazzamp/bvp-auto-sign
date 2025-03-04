@@ -10,8 +10,6 @@ IMAGE_PATH := A_Args[2]
 DATE_FROM := A_Args[3]
 DATE_TO := A_Args[4]
 
-CoordMode "Pixel", "Screen"
-
 if WinExist("FPT") {
     WinActivate
     Sleep 200
@@ -28,17 +26,15 @@ if WinExist("FPT") {
         Sleep 300
         MouseClick "Left"
         Sleep 300
-        MouseMove(200, 0, 50, "R")
+        MouseMove(0, 0)
         Sleep 300
 
-        if (!ImageSearch(&Z, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "khong-xoa-duoc.png")) {
+        if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png") && !FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
             Send('{Right}')
             Sleep 600
             Send("{Enter}")
             Sleep 600
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "xem-ky-so.png")) {
-                Sleep 200
-                MouseMove(FoundX + 20, FoundY - 10, 100)
+            if (FindImageAndMoveMouse(IMAGE_PATH . "xem-ky-so.png", 20, -10)) {
                 Sleep 500
                 MouseClick "Left"
                 Sleep 300
@@ -55,7 +51,8 @@ if WinExist("FPT") {
                         if (!FindImage(IMAGE_PATH . "check-y-lenh.png")) {
                             HasYLenh := true
                         }
-                        FindImageAndMoveMouse(IMAGE_PATH . "ky-so.png", 10, 10)
+                        Sleep 300
+                        FindImageAndMoveMouse(IMAGE_PATH . "ky-so.png", 20, -10)
                         Sleep 300
                         MouseClick "Left"
                         Sleep 500
@@ -73,7 +70,8 @@ if WinExist("FPT") {
                                 Sleep 1000
                                 loop {
                                     if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
-                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png")) {
+                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png") ||
+                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-2.png")) {
                                         Sleep 300
                                         MouseMove(240, -10, 50, "R")
                                         Sleep 200
@@ -85,7 +83,8 @@ if WinExist("FPT") {
                                             }
                                             loop {
                                                 if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
-                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png")) {
+                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png") ||
+                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-2.png")) {
                                                     Sleep 300
                                                     MouseMove(980, -10, 50, "R")
                                                     Sleep 200
@@ -125,12 +124,10 @@ if WinExist("FPT") {
             Sleep 600
         }
 
-        if (ImageSearch(&H, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "phieu-dieu-tri-last.png") ||
-        ImageSearch(&H, &K, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "phieu-dieu-tri-last-1.png")) {
+        if (FindImage(IMAGE_PATH . "phieu-dieu-tri-last.png") || FindImage(IMAGE_PATH . "phieu-dieu-tri-last-1.png") ||
+        FindImage(IMAGE_PATH . "phieu-dieu-tri-last-2.png")) {
             Sleep 300
-            ImageSearch(&G, &H, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "so-benh-an.png")
-            Sleep 300
-            MouseMove(G + 175, H - 10)
+            FindImageAndMoveMouse(IMAGE_PATH . "so-benh-an.png", 175, -10)
             Sleep 300
             MouseClick "Left"
             Sleep 500
