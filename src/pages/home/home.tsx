@@ -9,6 +9,8 @@ import { useFormik } from "formik";
 import { SelectScreenType } from "./select-screen-type";
 import "./home.css";
 import AdditionalFields from "./addtional-fields";
+import { MdBrowserUpdated } from "react-icons/md";
+import packageJson from "@/../package.json";
 
 function Home() {
   const [configs, setConfigs] = useState<any>({});
@@ -113,8 +115,14 @@ function Home() {
   }, []);
 
   return (
-    <div id="home" className="w-full h-full px-5 flex flex-col gap-6">
-      <h1 className="text-2xl mb-0 mt-6">Cấu hình ký</h1>
+    <div id="home" className="h-full px-5 flex flex-col gap-6">
+      <div className="flex justify-between items-center flex-row flex-shrink-1">
+        <h1 className="text-2xl mb-0 mt-6">Cấu hình ký</h1>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100">
+          <MdBrowserUpdated size={20} />
+          <span>Phiên bản {packageJson.version}</span>
+        </div>
+      </div>
       {configs.departments?.length > 0 && (
         <>
           <SelectScreenType
