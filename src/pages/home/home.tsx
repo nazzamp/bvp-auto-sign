@@ -10,13 +10,17 @@ import { SelectScreenType } from "./select-screen-type";
 import "./home.css";
 import AdditionalFields from "./addtional-fields";
 import { MdBrowserUpdated } from "react-icons/md";
-import packageJson from "@/../package.json";
+import { compareVersions } from "@/lib/utils";
 
 function Home() {
   const [configs, setConfigs] = useState<any>({});
   const [additionValues, setAdditionalValues] = useState([]);
   const [isAutoStart, setIsAutoStart] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [isNeedUpdate, setIsNeedUpdate] = useState(false);
+  const [downloadStatus, setDownloadStatus] = useState("Cập nhật");
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [version, setVersion] = useState("");
 
   const form = useFormik({
     initialValues: {
@@ -57,6 +61,16 @@ function Home() {
 
   const checkUpdate = async () => {
     const result = await ipc.invoke("check-update");
+    if (result?.updateInfo?.version) {
+      if (compareVersions(version, result.updateInfo.version) < 0) {
+        setIsNeedUpdate(true);
+      }
+    }
+  };
+
+  const checkVersion = async () => {
+    const result = await ipc.invoke("get-electron-version");
+    setVersion(result);
   };
 
   useEffect(() => {
@@ -65,6 +79,7 @@ function Home() {
     checkIsAutoStart();
     checkAutoHotkeyIsRunning();
     checkUpdate();
+    checkVersion();
   }, []);
 
   const sign = async (additionalFields = []) => {
@@ -114,18 +129,59 @@ function Home() {
     };
     ipc.on("ahk-status", statusListener);
 
+    const handleDownloadProgress = (event: any, progressInfo: any) => {
+      setDownloadStatus("Đang tải");
+      setDownloadProgress(progressInfo.percent);
+    };
+
+    const handleUpdateDownloaded = () => {
+      setDownloadStatus("Cài đặt ngay");
+    };
+
+    const handleError = (event: any, { message }: { message: string }) => {
+      setDownloadStatus(`Error: ${message}`);
+    };
+
+    ipc.on("download-progress", handleDownloadProgress);
+    ipc.on("update-downloaded", handleUpdateDownloaded);
+    ipc.on("update-error", handleError);
+
     return () => {
-      ipc?.removeListener?.("ahk-status", statusListener);
+      ipc.off("ahk-status", statusListener);
+      ipc.off("download-progress", handleDownloadProgress);
+      ipc.off("update-downloaded", handleUpdateDownloaded);
+      ipc.off("update-error", handleError);
     };
   }, []);
+
+  const handleDownload = async () => {
+    if (downloadStatus === "Cài đặt ngay") {
+      await ipc.invoke("quit-and-install");
+      return;
+    }
+    await ipc.invoke("start-download");
+  };
 
   return (
     <div id="home" className="h-full px-5 flex flex-col gap-6">
       <div className="flex justify-between items-center flex-row flex-shrink-1">
         <h1 className="text-2xl mb-0 mt-6">Cấu hình ký</h1>
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100">
-          <MdBrowserUpdated size={20} />
-          <span>Phiên bản {packageJson.version}</span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100">
+            <MdBrowserUpdated size={20} />
+            <span>Phiên bản {version}</span>
+          </div>
+          {/* {isNeedUpdate && (
+            <div
+              className="cursor-pointer flex items-center gap-2 px-3 py-1 rounded-full bg-lime-200"
+              onClick={handleDownload}
+            >
+              <span className="font-semibold text-lime-700">
+                {downloadStatus}{" "}
+                {downloadProgress !== 100 && Math.round(downloadProgress)}
+              </span>
+            </div>
+          )} */}
         </div>
       </div>
       {configs.departments?.length > 0 && (

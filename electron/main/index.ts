@@ -370,3 +370,7 @@ ipcMain.handle("check-auto-hotkey-running", async () => {
   const result = await checkAutoHotkey();
   return result;
 });
+
+ipcMain.handle("get-electron-version", (event) => {
+  return app.getVersion();
+});
