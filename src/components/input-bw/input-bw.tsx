@@ -19,7 +19,7 @@ const InputBW = ({
   return (
     <input
       placeholder={placeholder}
-      className="input"
+      className="input-bw"
       name={name}
       type={type}
       value={value}

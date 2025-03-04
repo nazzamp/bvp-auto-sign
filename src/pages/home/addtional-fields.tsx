@@ -19,8 +19,8 @@ const AdditionalFields = ({
 
   useEffect(() => {
     setAdditionalValues([
-      format(date?.from + "000000" || "", "yyyyMMdd"),
-      format(date?.to + "000000" || "", "yyyyMMdd"),
+      date?.from ? format(date?.from + "000000", "yyyyMMdd") : "20001010000000",
+      date?.to ? format(date?.to + "000000", "yyyyMMdd") : "20001010000000",
     ]);
   }, [date]);
 

@@ -9,6 +9,9 @@ import fs from "fs";
 import { exec, execFile } from "node:child_process";
 import AutoLaunch from "auto-launch";
 import psList from "ps-list";
+import { updateElectronApp } from "update-electron-app";
+
+updateElectronApp();
 
 // Configure auto-launcher
 const appLauncher = new AutoLaunch({

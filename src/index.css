@@ -83,3 +83,13 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.rdp-button {
+  border: none;
+  background: white;
+}
+
+.day-range-end,
+.day-range-start {
+  background: black;
+}

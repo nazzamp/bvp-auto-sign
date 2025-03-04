@@ -1,4 +1,4 @@
-.input {
+.input-bw {
   max-width: 190px;
   font-size: 1rem;
   height: 32px;
@@ -12,6 +12,6 @@
   padding-right: 12px;
 }
 
-.input:focus {
+.input-bw:focus {
   box-shadow: 4px 6px 0 black;
 }

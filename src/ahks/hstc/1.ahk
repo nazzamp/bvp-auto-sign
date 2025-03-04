@@ -38,11 +38,7 @@ if WinExist("FPT") {
             Sleep 600
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGE_PATH . "xem-ky-so.png")) {
                 Sleep 200
-                if (A_Index = 1) {
-                    MouseMove(FoundX + 20, FoundY - 10, 100)
-                } else {
-                    MouseMove(FoundX + 20, FoundY, 100)
-                }
+                MouseMove(FoundX + 20, FoundY - 10, 100)
                 Sleep 500
                 MouseClick "Left"
                 Sleep 300
@@ -76,7 +72,8 @@ if WinExist("FPT") {
                                 Send("#{Up}")
                                 Sleep 1000
                                 loop {
-                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png")) {
+                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
+                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png")) {
                                         Sleep 300
                                         MouseMove(240, -10, 50, "R")
                                         Sleep 200
@@ -87,7 +84,8 @@ if WinExist("FPT") {
                                                 WinActivate
                                             }
                                             loop {
-                                                if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png")) {
+                                                if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png") ||
+                                                FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png")) {
                                                     Sleep 300
                                                     MouseMove(980, -10, 50, "R")
                                                     Sleep 200
@@ -95,7 +93,7 @@ if WinExist("FPT") {
                                                     Sleep 500
                                                     break
                                                 }
-                                                Sleep 200
+                                                Sleep 300
                                                 Send("{WheelDown 3}")
                                                 Sleep 500
                                             }
@@ -104,7 +102,7 @@ if WinExist("FPT") {
                                         }
                                         break
                                     }
-                                    Sleep 200
+                                    Sleep 300
                                     Send("{WheelDown 3}")
                                     Sleep 500
                                 }
@@ -143,7 +141,7 @@ if WinExist("FPT") {
             Send("{Down}")
             Sleep 300
             Send("{Enter}")
-            Sleep 3000
+            Sleep 10000
             Send("{Tab}")
             Sleep 500
             Send("{{Tab}}")

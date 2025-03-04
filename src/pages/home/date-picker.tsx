@@ -39,7 +39,7 @@ export function DatePickerWithRange({ className, date, setDate }: IDatePicker) {
                   {format(date.from, "dd/MM/y")} - {format(date.to, "dd/MM/y")}
                 </>
               ) : (
-                format(date.from, "dd/M/y")
+                format(date.from, "dd/MM/y")
               )
             ) : (
               <span>Pick a date</span>
