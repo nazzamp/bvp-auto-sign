@@ -61,6 +61,8 @@ function Home() {
 
   const checkUpdate = async () => {
     const result = await ipc.invoke("check-update");
+    console.log({ result });
+
     if (result?.updateInfo?.version) {
       if (compareVersions(version, result.updateInfo.version) < 0) {
         setIsNeedUpdate(true);
@@ -171,7 +173,7 @@ function Home() {
             <MdBrowserUpdated size={20} />
             <span>Phiên bản {version}</span>
           </div>
-          {/* {isNeedUpdate && (
+          {isNeedUpdate && (
             <div
               className="cursor-pointer flex items-center gap-2 px-3 py-1 rounded-full bg-lime-200"
               onClick={handleDownload}
@@ -181,7 +183,7 @@ function Home() {
                 {downloadProgress !== 100 && Math.round(downloadProgress)}
               </span>
             </div>
-          )} */}
+          )}
         </div>
       </div>
       {configs.departments?.length > 0 && (
