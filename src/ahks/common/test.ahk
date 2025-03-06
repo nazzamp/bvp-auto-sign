@@ -12,7 +12,7 @@ if WinExist("FPT")
 
 ; MsgBox FindTextAndMoveMouse('TIN')
 MsgBox ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight,
-    "*50 ../images/acer-1920-1080/phieu-dieu-tri-last-1.png"
+    "*30 ../images/acer-1920-1080/chuyen-khoa.png"
 )
 ; Sleep 200
 ; MouseMove(x + 20, y - 10)

@@ -2,8 +2,11 @@
 #Include ../common/find-text.ahk
 #Include ../common/sign.ahk
 #Include ../common/find.ahk
+#Include ../common/float-esc.ahk
 
 Esc:: ExitApp
+FloatEscButton()
+BlockInput "MouseMove"
 
 PASS := A_Args[1]
 IMAGE_PATH := A_Args[2]
@@ -12,7 +15,18 @@ DATE_TO := A_Args[4]
 
 if WinExist("FPT") {
     WinActivate
+    Sleep 300
+    Send("^r")
+    Sleep 6000
     Sleep 200
+    FindImageAndMoveMouse(IMAGE_PATH . "so-benh-an.png", 140, -10)
+    Sleep 300
+    MouseClick "Left"
+    Sleep 300
+    if (!FindImage(IMAGE_PATH . "check-dieu-kien-ky.png")) {
+        MsgBox "Thực hiện sai thao tác, vui lòng thực hiện lại!"
+        ExitApp
+    }
     Send("{Tab}")
     Sleep 300
     Send("{{Tab}}")
@@ -39,6 +53,11 @@ if WinExist("FPT") {
                 SelectSign()
                 Send("{Enter}")
                 Sleep 300
+                loop {
+                    if (WinExist("Management System") || WinExist("Thông tin")) {
+                        break
+                    }
+                }
                 if WinExist("Management System") {
                     Send("{Enter}")
                     Sleep 300
@@ -53,11 +72,16 @@ if WinExist("FPT") {
                         FindImageAndMoveMouse(IMAGE_PATH . "ky-so.png", 20, -10)
                         Sleep 300
                         MouseClick "Left"
-                        Sleep 500
+                        Sleep 300
                         SelectSign()
                         Sleep 300
                         Send("{Enter}")
                         Sleep 300
+                        loop {
+                            if (WinExist("Nghiệp vụ ký số")) {
+                                break
+                            }
+                        }
                         Send("{Enter}")
                         Sleep 300
                         loop {
@@ -136,6 +160,7 @@ if WinExist("FPT") {
             Sleep 300
             Send("{Enter}")
             Sleep 10000
+            CheckKy()
             Send("{Tab}")
             Sleep 500
             Send("{{Tab}}")
@@ -146,6 +171,10 @@ if WinExist("FPT") {
             Sleep 500
             Send("{Down}")
             Sleep 600
+            if (FindImage(IMAGE_PATH . "chuyen-khoa.png", 30)) {
+                Send("{Down}")
+                Sleep 600
+            }
         }
     }
 }
@@ -178,4 +207,16 @@ CheckDateInRange(DATE_FROM, DATE_TO) {
     IS_IN_DATE_RANGE := DateDiff(CheckDate, DATE_FROM, "Days") >= 0 && DateDiff(DATE_TO, CheckDate, "Days") >= 0
 
     return IS_IN_DATE_RANGE
+}
+
+FoundError() {
+    MsgBox 'Quá trình tự động ký lỗi, vui lòng thực hiện lại!'
+    ExitApp
+}
+
+CheckKy() {
+    if (!FindImage(IMAGE_PATH . "check-dieu-kien-ky.png")) {
+        MsgBox "Thực hiện sai thao tác, vui lòng thực hiện lại!"
+        ExitApp
+    }
 }

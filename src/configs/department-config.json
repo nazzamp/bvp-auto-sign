@@ -2,24 +2,24 @@
   "departments": [
     {
       "id": "1",
-      "name": "Khoa chẩn đoán hình ảnh",
-      "signType": [
-        {
-          "id": "1",
-          "name": "Ký số xét nghiệm cận lâm sàng",
-          "ahkPath": "../ahks/cdha/1.ahk"
-        }
-      ]
-    },
-    {
-      "id": "2",
-      "name": "Khoa hồi sức tích cực",
+      "name": "Bác sĩ",
       "signType": [
         {
           "id": "1",
           "name": "Ký số phiếu điều trị",
           "ahkPath": "../ahks/hstc/1.ahk",
           "additionalFields": ["timeRange"]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Khoa chẩn đoán hình ảnh",
+      "signType": [
+        {
+          "id": "1",
+          "name": "Ký số xét nghiệm cận lâm sàng",
+          "ahkPath": "../ahks/cdha/1.ahk"
         }
       ]
     }
