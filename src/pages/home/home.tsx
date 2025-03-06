@@ -59,7 +59,7 @@ function Home() {
     setIsRunning(result);
   };
 
-  const checkUpdate = async () => {
+  const checkUpdate = async (version: string) => {
     const result = await ipc.invoke("check-update");
     console.log({ result });
 
@@ -73,6 +73,7 @@ function Home() {
   const checkVersion = async () => {
     const result = await ipc.invoke("get-electron-version");
     setVersion(result);
+    checkUpdate(result);
   };
 
   useEffect(() => {
@@ -80,7 +81,6 @@ function Home() {
     readUserData();
     checkIsAutoStart();
     checkAutoHotkeyIsRunning();
-    checkUpdate();
     checkVersion();
   }, []);
 
@@ -180,7 +180,9 @@ function Home() {
             >
               <span className="font-semibold text-lime-700">
                 {downloadStatus}{" "}
-                {downloadProgress !== 100 && Math.round(downloadProgress)}
+                {downloadProgress !== 100 &&
+                  downloadProgress !== 0 &&
+                  Math.round(downloadProgress) + "%"}
               </span>
             </div>
           )}
