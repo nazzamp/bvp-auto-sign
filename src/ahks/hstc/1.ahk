@@ -22,10 +22,7 @@ if WinExist("FPT") {
     Sleep 300
     MouseClick "Left"
     Sleep 300
-    if (!FindImage(IMAGE_PATH . "check-dieu-kien-ky.png")) {
-        MsgBox "Thực hiện sai thao tác, vui lòng thực hiện lại!"
-        ExitApp
-    }
+    CheckKy()
     Send("{Tab}")
     Sleep 300
     Send("{{Tab}}")
@@ -35,7 +32,11 @@ if WinExist("FPT") {
 
         Send("{Space}")
         Sleep 500
-        FindImageAndMoveMouse(IMAGE_PATH . "delete.png", 10, 0)
+        if (FindImage(IMAGE_PATH . "loi-ky-lap.png", 80)) {
+            MsgBox "Lỗi ký lặp, vui lòng thử lại!"
+            ExitApp
+        }
+        FindImageAndMoveMouse(IMAGE_PATH . "edit.png", 10, 0)
         Sleep 300
         MouseClick "Left"
         Sleep 500
@@ -50,10 +51,15 @@ if WinExist("FPT") {
         }
 
         if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png") && !FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
-            Send('{Right}')
-            Sleep 600
-            Send("{Enter}")
-            Sleep 600
+            if (!FindImageAndMoveMouse(IMAGE_PATH . "skip.png", 10, 0)) {
+                MsgBox "Lỗi tự động ký, vui lòng thử lại!"
+                ExitApp
+            }
+            Sleep 500
+            MouseClick 'Left'
+            Sleep 300
+            Send('{Tab}')
+            Sleep 500
             if (FindImageAndMoveMouse(IMAGE_PATH . "xem-ky-so.png", 20, -10)) {
                 Sleep 500
                 MouseClick "Left"
@@ -173,11 +179,11 @@ if WinExist("FPT") {
             Send("{{Tab}}")
             Sleep 500
         } else {
-            Sleep 1000
+            Sleep 500
             Send("{Space}")
-            Sleep 500
+            Sleep 800
             Send("{Down}")
-            Sleep 500
+            Sleep 800
             if (FindImage(IMAGE_PATH . "chuyen-khoa.png", 30)) {
                 Send("{Down}")
                 Sleep 500
@@ -228,7 +234,7 @@ FoundError() {
 }
 
 CheckKy() {
-    if (!FindImage(IMAGE_PATH . "check-dieu-kien-ky.png")) {
+    if (!FindImage(IMAGE_PATH . "check-dieu-kien-ky.png", 80)) {
         MsgBox "Thực hiện sai thao tác, vui lòng thực hiện lại!"
         ExitApp
     }
