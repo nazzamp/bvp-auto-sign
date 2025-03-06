@@ -18,7 +18,6 @@ if WinExist("FPT") {
     Sleep 300
     Send("^r")
     Sleep 6000
-    Sleep 200
     FindImageAndMoveMouse(IMAGE_PATH . "so-benh-an.png", 140, -10)
     Sleep 300
     MouseClick "Left"
@@ -35,7 +34,7 @@ if WinExist("FPT") {
         IsSmallerDate := 0
 
         Send("{Space}")
-        Sleep 300
+        Sleep 500
         FindImageAndMoveMouse(IMAGE_PATH . "delete.png", 10, 0)
         Sleep 300
         MouseClick "Left"
@@ -141,9 +140,9 @@ if WinExist("FPT") {
                 } else {
                     if (WinExist("Thông tin")) {
                         WinActivate
-                        Sleep 300
+                        Sleep 500
                         Send("!{F4}")
-                        Sleep 300
+                        Sleep 500
                     }
                 }
             }
