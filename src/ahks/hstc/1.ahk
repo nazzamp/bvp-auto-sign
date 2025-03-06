@@ -159,8 +159,9 @@ if WinExist("FPT") {
             Sleep 300
             MouseClick "Left"
             Sleep 500
-            if (FindImage(IMAGE_PATH . "het-benh-nhan.png")) {
+            if (FindImage(IMAGE_PATH . "het-benh-nhan.png", 80)) {
                 MsgBox "Đã ký số toàn bộ phiếu điều trị!"
+                ExitApp
                 break
             }
             Send("{Down}")
@@ -173,14 +174,14 @@ if WinExist("FPT") {
             Send("{{Tab}}")
             Sleep 500
         } else {
-            Sleep 500
+            Sleep 1000
             Send("{Space}")
             Sleep 500
             Send("{Down}")
-            Sleep 600
+            Sleep 500
             if (FindImage(IMAGE_PATH . "chuyen-khoa.png", 30)) {
                 Send("{Down}")
-                Sleep 600
+                Sleep 500
             }
         }
     }
