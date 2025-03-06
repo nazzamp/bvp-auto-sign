@@ -32,129 +32,134 @@ if WinExist("FPT") {
 
         Send("{Space}")
         Sleep 500
-        if (FindImage(IMAGE_PATH . "loi-ky-lap.png", 80)) {
-            MsgBox "Lỗi ký lặp, vui lòng thử lại!"
-            ExitApp
-        }
-        FindImageAndMoveMouse(IMAGE_PATH . "edit.png", 10, 0)
-        Sleep 300
-        MouseClick "Left"
-        Sleep 500
-        MouseMove(0, 0, 100)
-        Sleep 500
 
-        ; check sign in range
-        CheckDateValue := CheckDate(DATE_FROM, DATE_TO)
-
-        if (CheckDateValue = -1) {
-            IsSmallerDate := 1
-        }
-
-        if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png") && !FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
-            if (!FindImageAndMoveMouse(IMAGE_PATH . "skip.png", 10, 0)) {
-                MsgBox "Lỗi tự động ký, vui lòng thử lại!"
+        if (!FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
+            if (FindImage(IMAGE_PATH . "loi-ky-lap.png", 80)) {
+                MsgBox "Lỗi ký lặp, vui lòng thử lại!"
                 ExitApp
             }
-            Sleep 500
-            MouseClick 'Left'
+            FindImageAndMoveMouse(IMAGE_PATH . "edit.png", 10, 0)
             Sleep 300
-            Send('{Tab}')
+            MouseClick "Left"
             Sleep 500
-            if (FindImageAndMoveMouse(IMAGE_PATH . "xem-ky-so.png", 20, -10)) {
-                Sleep 500
-                MouseClick "Left"
-                Sleep 300
-                SelectSign()
-                Send("{Enter}")
-                Sleep 300
-                loop {
-                    if (WinExist("Management System") || WinExist("Thông tin")) {
-                        break
-                    }
+            MouseMove(0, 0, 100)
+            Sleep 500
+
+            ; check sign in range
+            CheckDateValue := CheckDate(DATE_FROM, DATE_TO)
+
+            if (CheckDateValue = -1) {
+                IsSmallerDate := 1
+            }
+
+            if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png")) {
+                if (!FindImageAndMoveMouse(IMAGE_PATH . "skip.png", 10, 0)) {
+                    MsgBox "Lỗi tự động ký, vui lòng thử lại!"
+                    ExitApp
                 }
-                if WinExist("Management System") {
+                Sleep 500
+                MouseClick 'Left'
+                Sleep 300
+                Send('{Tab}')
+                Sleep 500
+                if (FindImageAndMoveMouse(IMAGE_PATH . "xem-ky-so.png", 20, -10)) {
+                    Sleep 500
+                    MouseClick "Left"
+                    Sleep 300
+                    SelectSign()
                     Send("{Enter}")
                     Sleep 300
-                    if (CheckDateValue = 1) {
-                        HasYLenh := false
-                        if (!FindImage(IMAGE_PATH . "check-y-lenh.png") || FindImage(IMAGE_PATH . "co-thuoc.png", 50)) {
-                            HasYLenh := true
-                        }
-                        Sleep 300
-                        FindImageAndMoveMouse(IMAGE_PATH . "ky-so.png", 20, -10)
-                        Sleep 300
-                        MouseClick "Left"
-                        Sleep 300
-                        SelectSign()
-                        Sleep 300
-                        Send("{Enter}")
-                        Sleep 300
-                        loop {
-                            if (WinExist("Nghiệp vụ ký số")) {
-                                break
-                            }
-                        }
-                        Send("{Enter}")
-                        Sleep 300
-                        loop {
-                            if WinExist("Thông tin văn bản") {
-                                WinActivate
-                                Sleep 200
-                                Send("#{Up}")
-                                Sleep 1000
-                                loop {
-                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png", 0, 0, 150) ||
-                                    FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png", 0, 0, 150)) {
-                                        Sleep 300
-                                        MouseMove(240, -10, 50, "R")
-                                        Sleep 200
-                                        if (HasYLenh) {
-                                            SignAtPosNotExit(PASS)
-                                            Sleep 1000
-                                            if WinExist("Thông tin văn bản") {
-                                                WinActivate
-                                            }
-                                            loop {
-                                                if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png", 0, 0,
-                                                    150) || FindImageAndMoveMouse(IMAGE_PATH .
-                                                        "goc-phieu-dieu-tri-1.png", 0, 0, 150)) {
-                                                    Sleep 300
-                                                    MouseMove(980, -10, 50, "R")
-                                                    Sleep 200
-                                                    SignAtPos(PASS)
-                                                    Sleep 500
-                                                    break
-                                                }
-                                                Sleep 300
-                                                Send("{WheelDown 3}")
-                                                Sleep 500
-                                            }
-                                        } else {
-                                            SignAtPos(PASS)
-                                        }
-                                        break
-                                    }
-                                    Sleep 300
-                                    Send("{WheelDown 3}")
-                                    Sleep 500
-                                }
-                                break
-                            }
-                            Sleep(1000)
+                    loop {
+                        if (WinExist("Management System") || WinExist("Thông tin")) {
+                            break
                         }
                     }
-                } else {
-                    if (WinExist("Thông tin")) {
-                        WinActivate
-                        Sleep 500
-                        Send("!{F4}")
-                        Sleep 500
+                    if WinExist("Management System") {
+                        Send("{Enter}")
+                        Sleep 300
+                        if (CheckDateValue = 1) {
+                            HasYLenh := false
+                            if (!FindImage(IMAGE_PATH . "check-y-lenh.png") || FindImage(IMAGE_PATH . "co-thuoc.png",
+                                50)) {
+                                HasYLenh := true
+                            }
+                            Sleep 300
+                            FindImageAndMoveMouse(IMAGE_PATH . "ky-so.png", 20, -10)
+                            Sleep 300
+                            MouseClick "Left"
+                            Sleep 300
+                            SelectSign()
+                            Sleep 300
+                            Send("{Enter}")
+                            Sleep 300
+                            loop {
+                                if (WinExist("Nghiệp vụ ký số")) {
+                                    break
+                                }
+                            }
+                            Send("{Enter}")
+                            Sleep 300
+                            loop {
+                                if WinExist("Thông tin văn bản") {
+                                    WinActivate
+                                    Sleep 200
+                                    Send("#{Up}")
+                                    Sleep 1000
+                                    loop {
+                                        if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png", 0, 0, 150) ||
+                                        FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri-1.png", 0, 0, 150)) {
+                                            Sleep 300
+                                            MouseMove(240, -10, 50, "R")
+                                            Sleep 200
+                                            if (HasYLenh) {
+                                                SignAtPosNotExit(PASS)
+                                                Sleep 1000
+                                                if WinExist("Thông tin văn bản") {
+                                                    WinActivate
+                                                }
+                                                loop {
+                                                    if (FindImageAndMoveMouse(IMAGE_PATH . "goc-phieu-dieu-tri.png", 0,
+                                                        0,
+                                                        150) || FindImageAndMoveMouse(IMAGE_PATH .
+                                                            "goc-phieu-dieu-tri-1.png", 0, 0, 150)) {
+                                                        Sleep 300
+                                                        MouseMove(980, -10, 50, "R")
+                                                        Sleep 200
+                                                        SignAtPos(PASS)
+                                                        Sleep 500
+                                                        break
+                                                    }
+                                                    Sleep 300
+                                                    Send("{WheelDown 3}")
+                                                    Sleep 500
+                                                }
+                                            } else {
+                                                SignAtPos(PASS)
+                                            }
+                                            break
+                                        }
+                                        Sleep 300
+                                        Send("{WheelDown 3}")
+                                        Sleep 500
+                                    }
+                                    break
+                                }
+                                Sleep(1000)
+                            }
+                        }
+                    } else {
+                        if (WinExist("Thông tin")) {
+                            WinActivate
+                            Sleep 500
+                            Send("!{F4}")
+                            Sleep 500
+                        }
                     }
                 }
+            } else {
+                Send("{Enter}")
+                Sleep 600
             }
-        } else {
-            Send("{Enter}")
-            Sleep 600
         }
 
         if (FindImage(IMAGE_PATH . "phieu-dieu-tri-last.png", 50) || FindImage(IMAGE_PATH . "phieu-dieu-tri-last-1.png",
