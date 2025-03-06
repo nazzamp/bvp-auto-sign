@@ -32,6 +32,8 @@ if WinExist("FPT") {
     Send("{{Tab}}")
     Sleep 300
     loop {
+        IsSmallerDate := 0
+
         Send("{Space}")
         Sleep 300
         FindImageAndMoveMouse(IMAGE_PATH . "delete.png", 10, 0)
@@ -40,6 +42,13 @@ if WinExist("FPT") {
         Sleep 500
         MouseMove(0, 0, 100)
         Sleep 500
+
+        ; check sign in range
+        CheckDateValue := CheckDate(DATE_FROM, DATE_TO)
+
+        if (CheckDateValue = -1) {
+            IsSmallerDate := 1
+        }
 
         if (!FindImage(IMAGE_PATH . "khong-xoa-duoc.png") && !FindImage(IMAGE_PATH . "lua-chon-vtyt.png")) {
             Send('{Right}')
@@ -61,9 +70,7 @@ if WinExist("FPT") {
                 if WinExist("Management System") {
                     Send("{Enter}")
                     Sleep 300
-
-                    ; check sign in range
-                    if (CheckDateInRange(DATE_FROM, DATE_TO)) {
+                    if (CheckDateValue = 1) {
                         HasYLenh := false
                         if (!FindImage(IMAGE_PATH . "check-y-lenh.png") || FindImage(IMAGE_PATH . "co-thuoc.png", 50)) {
                             HasYLenh := true
@@ -146,7 +153,7 @@ if WinExist("FPT") {
         }
 
         if (FindImage(IMAGE_PATH . "phieu-dieu-tri-last.png", 50) || FindImage(IMAGE_PATH . "phieu-dieu-tri-last-1.png",
-            50)) {
+            50) || IsSmallerDate) {
             Sleep 300
             FindImageAndMoveMouse(IMAGE_PATH . "so-benh-an.png", 175, -10)
             Sleep 300
@@ -166,7 +173,7 @@ if WinExist("FPT") {
             Send("{{Tab}}")
             Sleep 500
         } else {
-            Sleep 300
+            Sleep 500
             Send("{Space}")
             Sleep 500
             Send("{Down}")
@@ -192,7 +199,7 @@ SelectSign() {
     Sleep 400
 }
 
-CheckDateInRange(DATE_FROM, DATE_TO) {
+CheckDate(DATE_FROM, DATE_TO) {
     Day := FindTextInRegion(355, 130, 355 + 23, 130 + 20)
     Month := FindTextInRegion(355 + 31, 130, 355 + 52, 130 + 20)
     Year := FindTextInRegion(355 + 61, 130, 355 + 93, 130 + 20)
@@ -205,8 +212,14 @@ CheckDateInRange(DATE_FROM, DATE_TO) {
     }
 
     IS_IN_DATE_RANGE := DateDiff(CheckDate, DATE_FROM, "Days") >= 0 && DateDiff(DATE_TO, CheckDate, "Days") >= 0
-
-    return IS_IN_DATE_RANGE
+    IS_DATE_SMALLER := DateDiff(CheckDate, DATE_FROM, "Days") < 0
+    if (IS_IN_DATE_RANGE) {
+        return 1
+    }
+    if (IS_DATE_SMALLER) {
+        return -1
+    }
+    return 0
 }
 
 FoundError() {
