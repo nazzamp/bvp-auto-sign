@@ -10,8 +10,8 @@ BlockInput "MouseMove"
 
 PASS := A_Args[1]
 IMAGE_PATH := A_Args[2]
-DATE_FROM := A_Args[3]
-DATE_TO := A_Args[4]
+DATE_FROM := A_Args[4]
+DATE_TO := A_Args[5]
 
 if WinExist("FPT") {
     WinActivate

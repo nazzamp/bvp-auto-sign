@@ -7,13 +7,25 @@
         {
           "id": "1",
           "name": "Ký số phiếu điều trị",
-          "ahkPath": "../ahks/hstc/1.ahk",
+          "ahkPath": "../ahks/bac-si/phieu-dieu-tri.ahk",
           "additionalFields": ["timeRange"]
         }
       ]
     },
     {
       "id": "2",
+      "name": "Điều dưỡng",
+      "signType": [
+        {
+          "id": "1",
+          "name": "Ký số phiếu điều dưỡng",
+          "ahkPath": "../ahks/bac-si/phieu-cham-soc.ahk",
+          "additionalFields": ["timeRange"]
+        }
+      ]
+    },
+    {
+      "id": "3",
       "name": "Khoa chẩn đoán hình ảnh",
       "signType": [
         {

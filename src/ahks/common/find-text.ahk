@@ -209,8 +209,6 @@ Log(msg) {
 }
 
 FindTextInRegion(x1, y1, x2, y2) {
-    ; CoordMode "Mouse", "Screen"
-
     Width := A_ScreenWidth
     Height := A_ScreenHeight
 
@@ -219,18 +217,55 @@ FindTextInRegion(x1, y1, x2, y2) {
     OCROutput := FileRead('output.tsv', "UTF-8")
     splitOutput := StrSplit(OCROutput, "`n", "`r")
     if (splitOutput.Length >= 6) {
-        Line := StrSplit(OCROutput, "`n", "`r")[6]
+        Line := splitOutput[6]
         Fields := StrSplit(Line, "`t")
-
-        ; Clean up
-        FileDelete('screen.png')
-        FileDelete('output.tsv')
-
+        CleanUp()
         return Fields[12]
     }
+    CleanUp()
+
+    return ''
+}
+
+FindNameInRegion(x1, y1, x2, y2) {
+    Width := A_ScreenWidth
+    Height := A_ScreenHeight
+
+    SaveScreenShotGrayScale(x1, y1, x2, y2, 'screen.png', 'png', 10) ;
+    RunWait('tesseract screen.png output -l vie tsv', , 'Hide')
+    OCROutput := FileRead('output.tsv', "UTF-8")
+    splitOutput := StrSplit(OCROutput, "`n", "`r")
+    if (splitOutput.Length = 10) {
+        name := ''
+        for index in [6, 7, 8, 9] {
+            if (index = 6) {
+                name := value[12]
+            } else {
+                value := StrSplit(splitOutput[index], "`t")
+                name := name . " " . value[12]
+            }
+        }
+        CleanUp()
+        return name
+    }
+    if (splitOutput.Length = 9) {
+        name := ''
+        for index in [6, 7, 8] {
+            value := StrSplit(splitOutput[index], "`t")
+            if (index = 6) {
+                name := value[12]
+            } else {
+                name := name . " " . value[12]
+            }
+        }
+        CleanUp()
+        return name
+    }
+    CleanUp()
+    return ''
+}
+
+CleanUp() {
     FileDelete('screen.png')
     FileDelete('output.tsv')
-
-    ; CoordMode "Pixel", "Screen"
-    return ''
 }

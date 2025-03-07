@@ -40,7 +40,7 @@ function Home() {
   const ipc = window.ipcRenderer as any;
 
   const readDepartmentData = async () => {
-    const data = await ipc.invoke("read-department-data");
+    const data = await ipc.invoke("read-common-data");
     setConfigs(data);
   };
 
@@ -98,6 +98,7 @@ function Home() {
       agrArr: [
         form.values.password,
         configs.screenTypes[form.values.screenType].path,
+        form.values.username,
         ...additionalFields,
       ],
     });
@@ -220,9 +221,9 @@ function Home() {
         </>
       )}
       <div className="flex gap-3 items-center">
-        <label className="w-32">Tên bác sĩ</label>
+        <label className="w-32">Người ký</label>
         <InputBW
-          placeholder="Nhập tên bác sĩ"
+          placeholder="Nhập tên người ký"
           value={form.values.username}
           onChange={(value: number) => form.setFieldValue("username", value)}
         />

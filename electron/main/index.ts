@@ -174,15 +174,15 @@ ipcMain.handle("open-win", (_, arg) => {
   }
 });
 
-function getDepartmentDataPath() {
+function getCommonDataPath() {
   return isDev
-    ? path.join(__dirname, "../../src/configs/department-config.json") // Dev: Project directory
-    : path.join(process.resourcesPath, "configs/department-config.json"); // Prod: Resources folder
+    ? path.join(__dirname, "../../src/configs/common-config.json") // Dev: Project directory
+    : path.join(process.resourcesPath, "configs/common-config.json"); // Prod: Resources folder
 }
 
-ipcMain.handle("read-department-data", async () => {
+ipcMain.handle("read-common-data", async () => {
   try {
-    const dataPath = getDepartmentDataPath();
+    const dataPath = getCommonDataPath();
     const rawData = await fs.promises.readFile(dataPath, "utf8");
     return JSON.parse(rawData);
   } catch (error) {
