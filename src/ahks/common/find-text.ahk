@@ -238,10 +238,10 @@ FindNameInRegion(x1, y1, x2, y2) {
     if (splitOutput.Length = 10) {
         name := ''
         for index in [6, 7, 8, 9] {
+            value := StrSplit(splitOutput[index], "`t")
             if (index = 6) {
                 name := value[12]
             } else {
-                value := StrSplit(splitOutput[index], "`t")
                 name := name . " " . value[12]
             }
         }

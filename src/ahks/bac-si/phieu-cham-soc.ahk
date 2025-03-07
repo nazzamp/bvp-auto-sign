@@ -36,12 +36,13 @@ if WinExist("FPT") {
             ExitApp
         }
 
-        if (FindNameInRegion(310, 148, 470, 165) = DOC_NAME) {
-            CheckDateValue := CheckDate(DATE_FROM, DATE_TO)
-            if (CheckDateValue = -1) {
-                IsSmallerDate := 1
+        CheckDateValue := CheckDate(DATE_FROM, DATE_TO)
+        if (CheckDateValue = -1) {
+            IsSmallerDate := 1
+        } else {
+            if (FindNameInRegion(310, 148, 470, 165) = DOC_NAME) {
+                KySo()
             }
-            KySo()
         }
 
         if (IsSmallerDate || FindImage(IMAGE_PATH . "het-phieu-cham-soc.png", 50)) {
