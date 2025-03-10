@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
-#Include screen-shot.ahk
-#Include find.ahk
-#Include sign.ahk
-#Include float-esc.ahk
+#Include ../common/screen-shot.ahk
+#Include ../common/find.ahk
+#Include ../common/sign.ahk
+#Include ../common/float-esc.ahk
 
 Esc:: ExitApp
 FloatEscButton()
@@ -13,10 +13,9 @@ if WinExist("FPT")
     WinActivate
 Sleep 1000
 
-PASS := 1234
-IMAGE_PATH := "../images/acer-1920-1080/"
-IsSmallerDate := false
-DATE := "26/02/2025"
+PASS := A_Args[1]
+IMAGE_PATH := A_Args[2]
+DATE := A_Args[4]
 
 LAST_FIRST_DATE := ""
 

@@ -1,41 +1,21 @@
-import React, { useEffect } from "react";
-import { DatePickerWithRange } from "./date-picker";
-import { DateRange } from "react-day-picker";
-import { format, subDays } from "date-fns";
+import AdditionalFieldRange from "./additional-field-range";
+import AdditionalFieldTime from "./additional-field-time";
 
-const AdditionalFields = ({
-  additionalFields,
-  additionValues,
-  setAdditionalValues,
-}: {
-  additionalFields: Array<string>;
-  additionValues: any;
-  setAdditionalValues: any;
-}) => {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: subDays(new Date(), 5),
-    to: new Date(),
-  });
-
-  useEffect(() => {
-    setAdditionalValues([
-      date?.from ? format(date?.from + "000000", "yyyyMMdd") : "20001010000000",
-      date?.to ? format(date?.to + "000000", "yyyyMMdd") : "20001010000000",
-    ]);
-  }, [date]);
-
-  const renderItem = (item: string, index: number) => {
-    if (item === "timeRange")
-      return (
-        <div className="flex gap-3 items-center" key={index}>
-          <label className="w-32">Trong khoảng</label>
-          <DatePickerWithRange date={date} setDate={setDate} />
-        </div>
-      );
+const AdditionalFields = (props: any) => {
+  if (!props?.additionalFields?.length) {
     return;
-  };
+  }
 
-  return <div>{additionalFields.map(renderItem)}</div>;
+  return (
+    <>
+      {props?.additionalFields.includes("time") && (
+        <AdditionalFieldTime {...props} />
+      )}
+      {props?.additionalFields.includes("timeRange") && (
+        <AdditionalFieldRange {...props} />
+      )}
+    </>
+  );
 };
 
 export default AdditionalFields;

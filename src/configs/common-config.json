@@ -6,8 +6,14 @@
       "signType": [
         {
           "id": "1",
-          "name": "Ký số phiếu điều trị",
-          "ahkPath": "../ahks/bac-si/phieu-dieu-tri.ahk",
+          "name": "Ký số phiếu điều trị theo ngày",
+          "ahkPath": "../ahks/bac-si/phieu-dieu-tri-single.ahk",
+          "additionalFields": ["time"]
+        },
+        {
+          "id": "1",
+          "name": "Ký số tất cả phiếu điều trị",
+          "ahkPath": "../ahks/bac-si/phieu-dieu-tri-all.ahk",
           "additionalFields": ["timeRange"]
         }
       ]

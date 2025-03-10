@@ -37,15 +37,19 @@ SignAtPos(PASS) {
         }
     }
     Sleep 500
-    if WinExist("Thông tin văn bản") {
-        WinActivate
-        Send("!{F4}")
-        Sleep 800
-        if WinExist("Nghiệp vụ") {
+    loop {
+        if WinExist("Thông tin văn bản") {
             WinActivate
             Send("!{F4}")
             Sleep 800
+            if WinExist("Nghiệp vụ") {
+                WinActivate
+                Send("!{F4}")
+                Sleep 800
+                break
+            }
         }
+        Sleep 1000
     }
 }
 
