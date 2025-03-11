@@ -1,5 +1,14 @@
 #Requires AutoHotkey v2.0
 
-A := '12/03/2025'
+if WinExist("FPT") {
+    WinActivate
+    Sleep 300
+    RemoveFocusFirstItem()
+}
 
-MsgBox SubStr(A, 3, 1) = '/'
+RemoveFocusFirstItem() {
+    MouseMove(210, 135)
+    Sleep 300
+    MouseClick "Left"
+    Sleep 300
+}

@@ -42,12 +42,15 @@ SignAtPos(PASS) {
             WinActivate
             Send("!{F4}")
             Sleep 800
-            if WinExist("Nghiệp vụ") {
-                WinActivate
-                Send("!{F4}")
-                Sleep 800
-                break
+            loop {
+                if WinExist("Nghiệp vụ") {
+                    WinActivate
+                    Send("!{F4}")
+                    Sleep 800
+                    break
+                }
             }
+            break
         }
         Sleep 1000
     }

@@ -19,8 +19,6 @@ const AdditionalFieldTime = ({
     setAdditionalValues([format(date, "dd/MM/yyyy")]);
   }, [date]);
 
-  console.log({ additionValues });
-
   const renderItem = (item: string, index: number) => {
     return (
       <div className="flex gap-3 items-center" key={index}>
